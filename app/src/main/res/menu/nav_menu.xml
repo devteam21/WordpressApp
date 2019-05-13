@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group1"
+        android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home">
+        </item>
+        <item
+            android:id="@+id/nav_categories"
+            android:icon="@drawable/ic_sample"
+            android:title="@string/categories">
+        </item>
+    </group>
+    <group android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/ic_privacy"
+            android:title="@string/privacy">
+        </item>
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/about">
+        </item>
+
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share"
+            android:title="@string/share">
+        </item>
+        <item
+            android:id="@+id/nav_update"
+            android:icon="@drawable/ic_update"
+            android:title="@string/update_app">
+        </item>
+        <item
+            android:id="@+id/nav_more"
+            android:icon="@drawable/ic_more"
+            android:title="@string/more_app">
+        </item>
+        <item
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/ic_rate"
+            android:title="@string/rate_app">
+        </item>
+
+    </group>
+</menu>
