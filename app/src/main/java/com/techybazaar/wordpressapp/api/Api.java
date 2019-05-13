@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 
 public interface Api {
 
-    @GET("/posts")
+    @GET("/wp-json/wp/v2/posts")
     Call<Post> getPosts();
 }
