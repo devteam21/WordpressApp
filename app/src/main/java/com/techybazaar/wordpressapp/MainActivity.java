@@ -1,5 +1,6 @@
 package com.techybazaar.wordpressapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -37,15 +38,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpToolbar();
-        getData();
-        contentView();
+        getPostData();
     }
 
-    private void contentView() {
-
-    }
-
-    private void getData() {
+    private void getPostData() {
 
         GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
         Call<List<Post>> call = service.getAllPosts();
@@ -83,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        menuItem.setChecked(true);
+        drawerLayout.closeDrawers();
+        switch (menuItem.getItemId()) {
+            case R.id.nav_categories:
+                Intent categoryIntent = new Intent( MainActivity.this, CategoryList.class);
+                startActivity(categoryIntent);
+                break;
+        }
         return false;
     }
 }

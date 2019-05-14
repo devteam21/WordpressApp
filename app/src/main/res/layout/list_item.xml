@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:elevation="10dp"
-    android:padding="5dp"
-    app:cardCornerRadius="5dp">
+    android:elevation="10dp">
 
     <LinearLayout
         android:id="@+id/lyt_parent"
@@ -20,7 +18,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:orientation="horizontal"
-            android:padding="5dp">
+            >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -28,8 +26,8 @@
 
                 <ImageView
                     android:id="@+id/post_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
                     android:layout_centerInParent="true"
                     android:src="@mipmap/ic_launcher" />
 
@@ -39,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -48,51 +46,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:text="Post Title Placed Here"
+                    android:text="Post Title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textStyle="bold" />
+                    android:textSize="14sp"/>
 
                 <TextView
-                    android:id="@+id/short_content"
+                    android:id="@+id/post_content_view"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:maxLines="2"
-                    android:text="Post short content will be show here"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                    android:maxLines="3"
+                    android:text="Post short content "
+                    android:textSize="12sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
                 <!--<LinearLayout-->
                     <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="wrap_content"-->
                     <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center_vertical"-->
+                    <!--android:gravity="end"-->
                     <!--android:orientation="horizontal">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="16dp"-->
+                        <!--android:layout_height="16dp"-->
+                        <!--android:src="@drawable/ic_history" />-->
 
                     <!--<TextView-->
-                        <!--android:id="@+id/date"-->
+                        <!--android:id="@+id/post_date_view"-->
                         <!--android:layout_width="0dp"-->
                         <!--android:layout_height="wrap_content"-->
                         <!--android:layout_weight="1"-->
                         <!--android:text="16 Mar 2016"-->
-                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
-                        <!--android:textColor="@color/grey_hard" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/comment"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="10"-->
-                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
-                        <!--android:textColor="@color/grey_hard" />-->
-
-                    <!--<ImageView-->
-                        <!--android:layout_width="@dimen/spacing_large"-->
-                        <!--android:layout_height="@dimen/spacing_large"-->
-                        <!--android:layout_marginLeft="@dimen/spacing_small"-->
-                        <!--android:layout_marginRight="@dimen/spacing_small"-->
-                        <!--android:src="@drawable/ic_comment"-->
-                        <!--android:tint="@color/grey_hard" />-->
-
+                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Caption" />-->
                 <!--</LinearLayout>-->
 
             </LinearLayout>

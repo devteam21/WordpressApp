@@ -53,23 +53,23 @@ public class Post {
     @Expose
     private Embedded embedded;
 
-//    public Post(Integer id, String date, String dateGmt, Guid guid, String modified, String modifiedGmt, String slug, String status, String type, String link, Title title, Content content, Excerpt excerpt, List<Integer> categories, Embedded embedded) {
-//        this.id = id;
-//        this.date = date;
-//        this.dateGmt = dateGmt;
-//        this.guid = guid;
-//        this.modified = modified;
-//        this.modifiedGmt = modifiedGmt;
-//        this.slug = slug;
-//        this.status = status;
-//        this.type = type;
-//        this.link = link;
-//        this.title = title;
-//        this.content = content;
-//        this.excerpt = excerpt;
-//        this.categories = categories;
-//        this.embedded = embedded;
-//    }
+    public Post(Integer id, String date, String dateGmt, Guid guid, String modified, String modifiedGmt, String slug, String status, String type, String link, Title title, Content content, Excerpt excerpt, List<Integer> categories, Embedded embedded) {
+        this.id = id;
+        this.date = date;
+        this.dateGmt = dateGmt;
+        this.guid = guid;
+        this.modified = modified;
+        this.modifiedGmt = modifiedGmt;
+        this.slug = slug;
+        this.status = status;
+        this.type = type;
+        this.link = link;
+        this.title = title;
+        this.content = content;
+        this.excerpt = excerpt;
+        this.categories = categories;
+        this.embedded = embedded;
+    }
 
     public Integer getId() {
         return id;
