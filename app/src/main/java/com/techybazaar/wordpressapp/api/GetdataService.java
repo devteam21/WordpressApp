@@ -7,7 +7,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GetdataService {
@@ -15,8 +14,11 @@ public interface GetdataService {
 
 
         @GET("/wp-json/wp/v2/posts?_embed")
-        Call<List<Post>> getAllPosts();
+        Call<List<Post>> getAllPosts(@Query("page") int page_no);
 
         @GET ("/wp-json/wp/v2/categories")
-        Call<List<Category>> getCategotyList(@Query("page") String page_no);
+        Call<List<Category>> getCategotyList(@Query("per_page") int per_page);
+
+        @GET ("/wp-json/wp/v2/posts?_embed")
+        Call<List<Post>> getCategoryPost (@Query("categories") String caterogory_id, @Query("page") int page_no);
 }

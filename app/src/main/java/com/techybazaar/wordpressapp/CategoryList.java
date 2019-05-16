@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.techybazaar.wordpressapp.adapter.CategoryAdapter;
+import com.techybazaar.wordpressapp.adapter.CategoryListAdapter;
 import com.techybazaar.wordpressapp.api.GetdataService;
 import com.techybazaar.wordpressapp.api.RetrofitClient;
 import com.techybazaar.wordpressapp.model.Category;
@@ -22,6 +22,14 @@ import retrofit2.Response;
 public class CategoryList extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private CategoryListAdapter categoryAdapter;
+    private List<Category> category = new ArrayList<>();
+    private LinearLayoutManager manager;
+
+    private int PAGE_NO = 1;
+
+    private static final String TAG = "CategoryList";
+
 
 
     @Override
@@ -30,11 +38,17 @@ public class CategoryList extends AppCompatActivity {
         setContentView(R.layout.activity_category_list);
         setupToolbar();
         getCategoryData();
-
-
+        //recyclerview
+        recyclerView = findViewById(R.id.category_list);
+        manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(true);
+        categoryAdapter = new CategoryListAdapter(CategoryList.this, category);
+        recyclerView.setAdapter(categoryAdapter);
 
 
     }
+
     private void setupToolbar() {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.categories));
@@ -42,17 +56,17 @@ public class CategoryList extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    private  void  getCategoryData(){
+
+    private void getCategoryData() {
         GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
-        Call<List<Category>> call = service.getCategotyList("2");
+        Call<List<Category>> call = service.getCategotyList(30);
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 List<Category> categories = response.body();
-                recyclerView = findViewById(R.id.category_list);
-                recyclerView.setLayoutManager( new LinearLayoutManager(getApplicationContext()));
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setAdapter( new CategoryAdapter(CategoryList.this, categories));
+                category.addAll(categories);
+                categoryAdapter.notifyDataSetChanged();
+
 
             }
 
@@ -63,4 +77,6 @@ public class CategoryList extends AppCompatActivity {
             }
         });
     }
+
+
 }

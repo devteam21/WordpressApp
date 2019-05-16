@@ -19,15 +19,49 @@
             <include layout="@layout/toolbar" />
 
         </android.support.design.widget.AppBarLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/post_list"
+        <ProgressBar
+            android:id="@+id/psbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appbar"
-            tools:listitem="@layout/list_item">
+            android:layout_below="@id/appbar"
+            android:visibility="gone"
+            />
 
-        </android.support.v7.widget.RecyclerView>
+        <RelativeLayout
+            android:id="@+id/hori"
+            android:layout_below="@id/psbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/post_list_large"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                tools:listitem="@layout/list_item_large"
+                >
+
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@id/hori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/post_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/list_item"
+                android:orientation="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </RelativeLayout>
+
+
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView
