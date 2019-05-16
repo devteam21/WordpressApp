@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +45,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  PostViewHolder postViewHolder,  int i) {
-        Post post = posts.get(i);
+    public void onBindViewHolder(@NonNull final PostViewHolder postViewHolder, int i) {
+        final Post post = posts.get(i);
         Document document = Jsoup.parse(post.getTitle().getRendered());
-        String title = document.body().text();
+        final String title = document.body().text();
         postViewHolder.postTitleView.setText(title);
         Document doc = Jsoup.parse(post.getExcerpt().getRendered());
         String content = doc.body().text();
@@ -71,6 +72,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(context, PostDetails.class);
                 context.startActivity(intent);
+            }
+        });
+        postViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //Log.d("MainActivity", ""+title);
+                return false;
+
             }
         });
 
