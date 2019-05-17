@@ -19,44 +19,58 @@
             <include layout="@layout/toolbar" />
 
         </android.support.design.widget.AppBarLayout>
+
         <ProgressBar
             android:id="@+id/psbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_below="@id/appbar"
-            android:visibility="gone"
-            />
+            android:layout_centerInParent="true" />
 
         <RelativeLayout
             android:id="@+id/hori"
-            android:layout_below="@id/psbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/psbar">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/post_list_large"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                tools:listitem="@layout/list_item_large"
-                >
+                tools:listitem="@layout/list_item_large">
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_below="@id/hori"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hori">
 
-            <android.support.v7.widget.RecyclerView
-
-                android:id="@+id/post_list"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/list_item"
-                android:orientation="horizontal">
+                android:background="@color/colorPrimary"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@android:color/white"
+                app:tabMode="fixed"
+                app:tabTextColor="@android:color/white" />
 
-            </android.support.v7.widget.RecyclerView>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!--<android.support.v7.widget.RecyclerView-->
+
+                <!--android:id="@+id/post_list"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--tools:listitem="@layout/list_item">-->
+
+            <!--</android.support.v7.widget.RecyclerView>-->
 
 
         </RelativeLayout>

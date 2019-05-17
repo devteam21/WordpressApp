@@ -23,4 +23,13 @@
         tools:listitem="@layout/category_item">
 
     </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_below="@id/appbar"
+        android:id="@+id/cat_psbar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

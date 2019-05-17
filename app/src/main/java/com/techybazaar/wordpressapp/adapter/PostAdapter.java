@@ -1,16 +1,17 @@
 package com.techybazaar.wordpressapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.techybazaar.wordpressapp.PostDetails;
@@ -23,17 +24,17 @@ import org.jsoup.nodes.Document;
 import java.util.List;
 
 
-
-
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private Context context;
     private List<Post> posts;
+    private Activity mActivity;
 
     private boolean loading;
 
-    public PostAdapter(Context context, List<Post> posts) {
+    public PostAdapter(Context context, List<Post> posts, Activity mActivity) {
         this.context = context;
         this.posts = posts;
+        this.mActivity = mActivity;
     }
 
     @NonNull
@@ -52,10 +53,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         postViewHolder.postTitleView.setText(title);
         Document doc = Jsoup.parse(post.getExcerpt().getRendered());
         String content = doc.body().text();
-        postViewHolder.postContentView.setText(content);
+//        postViewHolder.postContentView.setText(content);
 
-        try{
-            String imageUrl= post.getEmbedded().getWpFeaturedmedia().get(0).getMediaDetails().getSizes().getMedium().getSourceUrl();
+        try {
+            String imageUrl = post.getEmbedded().getWpFeaturedmedia().get(0).getMediaDetails().getSizes().getMedium().getSourceUrl();
             Glide.with(context)
                     .load(imageUrl)
 //                    .placeholder(R.drawable.loading)
@@ -63,15 +64,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     .into(postViewHolder.postImageView);
             postViewHolder.postImageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-        }catch (NullPointerException ignored){
+        }
+        catch (NullPointerException ignored) {
 
         }
+//        postViewHolder.postImageView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_trasition_left_animation));
+//        postViewHolder.postContentView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_trasition_right_animation));
+//        postViewHolder.postTitleView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_trasition_right_animation));
 
         postViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(context, PostDetails.class);
+                intent.putExtra("id", post.getId().toString());
+                intent.putExtra("title", post.getTitle().getRendered());
+                intent.putExtra("catId", post.getCategories().get(0).toString());
+                intent.putExtra("content", post.getContent().getRendered());
+                intent.putExtra("postLink", post.getLink());
+                intent.putExtra("imageUrl", post.getEmbedded().getWpFeaturedmedia().get(0).getMediaDetails().getSizes().getFull().getSourceUrl());
                 context.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         postViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -84,7 +97,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
 
 
-
     }
 
     @Override
@@ -95,9 +107,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView postImageView, imageLarge;
         TextView postTitleView, postContentView;
+        CardView cardView;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.cardview);
             postImageView = itemView.findViewById(R.id.post_image);
             postTitleView = itemView.findViewById(R.id.post_title);
             postContentView = itemView.findViewById(R.id.post_content_view);
@@ -108,8 +122,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public void setLoaded() {
         loading = false;
-        for(int i = 0; i< getItemCount(); i++){
-            if(posts.get(i) == null){
+        for (int i = 0; i < getItemCount(); i++) {
+            if (posts.get(i) == null) {
                 posts.remove(i);
                 notifyItemRemoved(i);
             }

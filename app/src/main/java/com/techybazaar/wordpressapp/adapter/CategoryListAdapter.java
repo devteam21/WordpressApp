@@ -1,5 +1,6 @@
 package com.techybazaar.wordpressapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -21,10 +22,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     private Context ctx;
     private List<Category> category = new ArrayList<>();
+    private Activity mActivity;
 
-    public CategoryListAdapter(Context ctx, List<Category> category) {
+    private boolean loading;
+
+
+    public CategoryListAdapter(Context ctx, List<Category> category,Activity mActivity) {
         this.ctx = ctx;
         this.category = category;
+        this.mActivity = mActivity;
 
     }
 
@@ -49,7 +55,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             public void onClick(View v) {
                 Intent categoryIntent = new Intent(ctx, CategoryPost.class);
                 categoryIntent.putExtra("id", categorylist.getId().toString());
+                categoryIntent.putExtra("name", categorylist.getName());
                 ctx.startActivity(categoryIntent);
+                mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -72,6 +80,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
 
 
+    }
+    public void setLoaded() {
+        loading = false;
+        for(int i = 0; i< getItemCount(); i++){
+            if(category.get(i) == null){
+                category.remove(i);
+                notifyItemRemoved(i);
+            }
+        }
     }
 
 }
