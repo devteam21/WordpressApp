@@ -53,6 +53,7 @@ public class PostDetails extends AppCompatActivity {
 
     private List<CategoryName> catName= new ArrayList<>();
     public String name;
+    public  String excerpt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +64,25 @@ public class PostDetails extends AppCompatActivity {
 
         final Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-        String catId = intent.getStringExtra("catId");
-        final String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-        String url = intent.getStringExtra("postLink");
-        String imageUrl = intent.getStringExtra("imageUrl");
 
+        String catId = intent.getStringExtra("catId");
+
+        final String title = intent.getStringExtra("title");
         Document doc = Jsoup.parse(title);
         String parsedTitle = doc.body().text();
+
+        String cnt = intent.getStringExtra("breifcontent");
+        Document document = Jsoup.parse(cnt);
+        String breifcontent = document.body().text();
+        excerpt = breifcontent;
+
+        String content = intent.getStringExtra("content");
+
+        String url = intent.getStringExtra("postLink");
+
+        String imageUrl = intent.getStringExtra("imageUrl");
+
+
         getCategoryNameData(catId);
 
 
@@ -184,20 +196,21 @@ public class PostDetails extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        String content = excerpt;
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                supportFinishAfterTransition();
                 break;
             case R.id.open_in_browser:
                 String postUrl = getIntent().getStringExtra("postLink");
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(postUrl));
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.action_share:
-                Tools.sharePost(this,getIntent().getStringExtra("imageUrl"));
+
+                Tools.sharePost(this,getIntent().getStringExtra("title"),getIntent().getStringExtra("postLink"), content );
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -236,7 +249,6 @@ public class PostDetails extends AppCompatActivity {
             mwebView.goBack();
         } else {
             super.onBackPressed();
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
     }
 }

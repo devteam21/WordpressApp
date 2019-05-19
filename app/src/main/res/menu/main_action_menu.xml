@@ -7,4 +7,12 @@
         android:icon="@drawable/ic_share"
         app:showAsAction="always">
     </item>
+    <item
+        android:title="@string/goto_website"
+        android:id="@+id/action_gotoweb">
+    </item>
+    <item
+        android:title="@string/rate_app"
+        android:id="@+id/action_rateapp">
+    </item>
 </menu>

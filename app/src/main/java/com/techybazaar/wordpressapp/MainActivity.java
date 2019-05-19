@@ -1,6 +1,12 @@
 package com.techybazaar.wordpressapp;
 
+import android.app.Dialog;
+import android.app.MediaRouteButton;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -10,29 +16,45 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.techybazaar.wordpressapp.adapter.PostAdapter;
 import com.techybazaar.wordpressapp.adapter.PostLargeAdapter;
 import com.techybazaar.wordpressapp.adapter.ViewPagerAdapter;
 import com.techybazaar.wordpressapp.api.GetdataService;
 import com.techybazaar.wordpressapp.api.RetrofitClient;
+import com.techybazaar.wordpressapp.fragment.AnmeegamFragment;
+import com.techybazaar.wordpressapp.fragment.CinemaFragment;
+import com.techybazaar.wordpressapp.fragment.CricketFragment;
+import com.techybazaar.wordpressapp.fragment.IndiaFragment;
+import com.techybazaar.wordpressapp.fragment.NewsFragment;
+import com.techybazaar.wordpressapp.fragment.TamilNaduFragment;
+import com.techybazaar.wordpressapp.fragment.WorldFragment;
 import com.techybazaar.wordpressapp.model.Category;
 import com.techybazaar.wordpressapp.model.Post;
+import com.techybazaar.wordpressapp.utils.NetworkCheck;
 import com.techybazaar.wordpressapp.utils.Tools;
 
+import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,36 +71,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView, recyclerViewLarge;
     private LinearLayoutManager manager;
     private PostLargeAdapter pLargeAdapter;
-    private PostAdapter pAdapter;
-    private List<Post> post = new ArrayList<>();
     private List<Post> postLarge = new ArrayList<>();
-    private ProgressBar progressBar;
     private ViewPager viewPager;
     private ViewPagerAdapter vAdapter;
     private TabLayout tabLayout;
-
-
-
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private RelativeLayout relativeLayout, failedView;
 
 
     private int page_no = 1;
     private boolean loading = true;
 
-    private CategoryList categoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpToolbar();
-        getPostData(page_no);
+        connectionCheck();
         getCategoryPost();
 
-        progressBar = findViewById(R.id.psbar);
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         viewPager = findViewById(R.id.viewpager);
         vAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout = findViewById(R.id.tablayout);
-
+        relativeLayout = findViewById(R.id.content_layout);
+        failedView = findViewById(R.id.failed_view);
 
         // Large banner recyclerview
         recyclerViewLarge = findViewById(R.id.post_list_large);
@@ -98,92 +116,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-//        post recyclerview
-//        recyclerView = findViewById(R.id.post_list);
-//        manager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(manager);
-//        recyclerView.setHasFixedSize(true);
-//        pAdapter = new PostAdapter(MainActivity.this, post, this);
-//        recyclerView.setAdapter(pAdapter);
-//
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                progressBar.setVisibility(View.VISIBLE);
-//                int lastPos = manager.findLastVisibleItemPosition();
-//                if (lastPos == (pAdapter.getItemCount() - 1)) {
-//                    page_no++;
-//                    getPostData(page_no);
-//
-//                } else {
-//                    pAdapter.setLoaded();
-//                }
-//                loading = true;
-//                progressBar.setVisibility(View.GONE);
-//
-//            }
-//        });
+        // add fragment
+        vAdapter.addFragment(new NewsFragment(), getString(R.string.news));
+        vAdapter.addFragment(new CinemaFragment(), getString(R.string.cinema));
+        vAdapter.addFragment(new CinemaFragment(), getString(R.string.entertainment));
+        vAdapter.addFragment(new TamilNaduFragment(), getString(R.string.tamilnadu));
+        vAdapter.addFragment(new CricketFragment(), getString(R.string.cricket));
+        vAdapter.addFragment(new IndiaFragment(), getString(R.string.india));
+        vAdapter.addFragment(new WorldFragment(), getString(R.string.world));
+        vAdapter.addFragment(new AnmeegamFragment(), getString(R.string.anmeegam));
 
         //adapter setup
         viewPager.setAdapter(vAdapter);
+        vAdapter.notifyDataSetChanged();
         tabLayout.setupWithViewPager(viewPager);
 
-        //add fragment
-
-
-//        vAdapter.addFragment(new Fragment(), "cinema");
-
-        setUpToolbar();
     }
 
-
-    private void getPostData(int page_no) {
-
-        GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
-        Call<List<Post>> call = service.getAllPosts(page_no);
-        call.enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
-                List<Post> mlist = null;
-                try {
-                    mlist = response.body();
-                    post.addAll(mlist);
-                    pAdapter.notifyDataSetChanged();
-
-                } catch (NullPointerException ignored) {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
-//                Toast.makeText(MainActivity.this, "Loading Post...", Toast.LENGTH_LONG).show();
-
-            }
-        });
-    }
 
     public void getCategoryPost() {
         GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
-        Call<List<Post>> call = service.getCategoryPost("392", page_no);
+        Call<List<Post>> call = service.getCategoryPost("280", page_no);
         call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 List<Post> mlist = null;
                 try {
-                    mlist = response.body();
-                    postLarge.addAll(mlist);
-                     pLargeAdapter.notifyDataSetChanged();
-                     progressBar.setVisibility(View.GONE);
+                    if (response.isSuccessful()) {
+                        mlist = response.body();
+                        postLarge.addAll(mlist);
+                        pLargeAdapter.notifyDataSetChanged();
+                    } else {
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.VISIBLE);
+                    }
                 } catch (NullPointerException ignored) {
 
                 }
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
 
             }
 
@@ -199,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setUpToolbar() {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.home);
         setSupportActionBar(toolbar);
         navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -253,7 +225,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_share:
                 Tools.shareAction(this);
                 break;
+            case R.id.action_rateapp:
+                Tools.rateAction(this);
+                break;
+            case R.id.action_gotoweb:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RetrofitClient.BASE_URL));
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void connectionCheck() {
+        relativeLayout = findViewById(R.id.content_layout);
+        failedView = findViewById(R.id.failed_view);
+        if (!NetworkCheck.isConnectingToInternet(this)) {
+            relativeLayout.setVisibility(View.GONE);
+            failedView.setVisibility(View.VISIBLE);
+        } else {
+            relativeLayout.setVisibility(View.VISIBLE);
+            failedView.setVisibility(View.GONE);
+        }
+        Button retry;
+        retry = findViewById(R.id.failed_retry);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (NetworkCheck.isConnectingToInternet(MainActivity.this)) {
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    failedView.setVisibility(View.GONE);
+                    getCategoryPost();
+                }
+            }
+        });
+    }
+
 }

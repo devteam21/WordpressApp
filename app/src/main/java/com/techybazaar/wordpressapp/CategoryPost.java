@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.techybazaar.wordpressapp.adapter.PostAdapter;
 import com.techybazaar.wordpressapp.api.GetdataService;
 import com.techybazaar.wordpressapp.api.RetrofitClient;
@@ -31,13 +32,13 @@ import retrofit2.Response;
 public class CategoryPost extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private Toolbar toolbar;
     private String CATEGORY_ID;
     private String catName;
-    private  LinearLayoutManager manager;
+    private LinearLayoutManager manager;
     private PostAdapter pAdapter;
     private List<Post> postList = new ArrayList<>();
+    private ShimmerFrameLayout mShimmerViewContainer;
 
 
     private int page_no = 1;
@@ -49,7 +50,6 @@ public class CategoryPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_post);
 
-        progressBar = findViewById(R.id.psbar);
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
@@ -59,29 +59,30 @@ public class CategoryPost extends AppCompatActivity {
         getCategoryPostData(CATEGORY_ID, page_no);
         setupToolbar(catName);
 
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+
         recyclerView = findViewById(R.id.category_post_list);
         manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
         pAdapter = new PostAdapter(this, postList, this);
         recyclerView.setAdapter(pAdapter);
-        progressBar.setVisibility(View.VISIBLE);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                progressBar.setVisibility(View.VISIBLE);
                 int lastPos = manager.findLastVisibleItemPosition();
-                if ( lastPos == (pAdapter.getItemCount() - 1 )) {
+                if (lastPos == (pAdapter.getItemCount() - 1)) {
                     page_no++;
                     getCategoryPostData(CATEGORY_ID, page_no);
-                }else {
+                } else {
                     pAdapter.setLoaded();
                 }
                 loading = true;
-                progressBar.setVisibility(View.GONE);
+
+
             }
         });
 
@@ -99,7 +100,7 @@ public class CategoryPost extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupToolbar(String categoryName ) {
+    private void setupToolbar(String categoryName) {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(categoryName);
         setSupportActionBar(toolbar);
@@ -107,21 +108,32 @@ public class CategoryPost extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void getCategoryPostData(String catId ,int page_no){
+    public void getCategoryPostData(String catId, int page_no) {
         GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
         Call<List<Post>> call = service.getCategoryPost(CATEGORY_ID, page_no);
         call.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 List<Post> list = null;
-                try{
-                    list= response.body();
-                    postList.addAll(list);
-                    pAdapter.notifyDataSetChanged();
+                try {
+                    if (response.isSuccessful()) {
+                        list = response.body();
+                        postList.addAll(list);
+                        pAdapter.notifyDataSetChanged();
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
 
-                }catch (NullPointerException ignored){
+                    } else {
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.VISIBLE);
+                    }
+
+                } catch (NullPointerException ignored) {
 
                 }
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+
             }
 
             @Override

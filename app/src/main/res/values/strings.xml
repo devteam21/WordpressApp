@@ -10,6 +10,17 @@
     <string name="rate_app">Rate App</string>
     <string name="privacy_text">privacy policy</string>
     <string name="about_text">about</string>
+    <string name="goto_website">Goto Website</string>
+
+
+    <string name="news">செய்திகள்</string>
+    <string name="cinema">சினிமா</string>
+    <string name="tamilnadu">தமிழ்நாடு</string>
+    <string name="cricket">கிரிக்கெட்</string>
+    <string name="world">உலகம்</string>
+    <string name="india">இந்தியா</string>
+    <string name="anmeegam">ஆன்மீகம்</string>
+    <string name="entertainment">பொழுதுபோக்கு</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,19 +16,41 @@
         <include layout="@layout/toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
-    <ProgressBar
-        android:id="@+id/psbar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_below="@id/appbar"
-        android:layout_centerInParent="true"
-        />
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        shimmer:shimmer_duration="800">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/post_list_placeholder_layout" />
+
+        <include layout="@layout/post_list_placeholder_layout" />
+
+        <include layout="@layout/post_list_placeholder_layout" />
+
+        <include layout="@layout/post_list_placeholder_layout" />
+
+        <include layout="@layout/post_list_placeholder_layout" />
+
+        <include layout="@layout/post_list_placeholder_layout" />
+
+        <include layout="@layout/post_list_placeholder_layout" />
+    </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <android.support.v7.widget.RecyclerView
+
         android:id="@+id/category_post_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/psbar"
+        android:layout_below="@+id/appbar"
         tools:listitem="@layout/list_item">
 
     </android.support.v7.widget.RecyclerView>

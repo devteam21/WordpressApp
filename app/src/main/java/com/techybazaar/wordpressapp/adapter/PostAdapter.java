@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +18,11 @@ import com.bumptech.glide.Glide;
 import com.techybazaar.wordpressapp.PostDetails;
 import com.techybazaar.wordpressapp.R;
 import com.techybazaar.wordpressapp.model.Post;
+import com.techybazaar.wordpressapp.utils.Tools;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
 
 import java.util.List;
 
@@ -51,6 +54,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Document document = Jsoup.parse(post.getTitle().getRendered());
         final String title = document.body().text();
         postViewHolder.postTitleView.setText(title);
+        String  date = Tools.date;
+        postViewHolder.postDateView.setText(date);
         Document doc = Jsoup.parse(post.getExcerpt().getRendered());
         String content = doc.body().text();
 //        postViewHolder.postContentView.setText(content);
@@ -80,11 +85,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 intent.putExtra("id", post.getId().toString());
                 intent.putExtra("title", post.getTitle().getRendered());
                 intent.putExtra("catId", post.getCategories().get(0).toString());
+                intent.putExtra("breifcontent", post.getExcerpt().getRendered());
                 intent.putExtra("content", post.getContent().getRendered());
-                intent.putExtra("postLink", post.getLink());
-                intent.putExtra("imageUrl", post.getEmbedded().getWpFeaturedmedia().get(0).getMediaDetails().getSizes().getFull().getSourceUrl());
-                context.startActivity(intent);
-                mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                intent.putExtra("postLink", post.getGuid().getRendered());
+                intent.putExtra("imageUrl", post.getEmbedded()
+                        .getWpFeaturedmedia().get(0).getMediaDetails()
+                        .getSizes().getFull().getSourceUrl());
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(mActivity,postViewHolder.postImageView,"image" );
+                context.startActivity(intent, options.toBundle());
+
             }
         });
         postViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -104,9 +114,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return posts.size();
     }
 
-    public class PostViewHolder extends RecyclerView.ViewHolder {
-        ImageView postImageView, imageLarge;
-        TextView postTitleView, postContentView;
+    public  static class PostViewHolder extends RecyclerView.ViewHolder {
+        ImageView postImageView;
+        TextView postTitleView, postContentView, postDateView;
         CardView cardView;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -114,8 +124,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             cardView = itemView.findViewById(R.id.cardview);
             postImageView = itemView.findViewById(R.id.post_image);
             postTitleView = itemView.findViewById(R.id.post_title);
+            postDateView = itemView.findViewById(R.id.post_date_view);
             postContentView = itemView.findViewById(R.id.post_content_view);
-            imageLarge = itemView.findViewById(R.id.img_large);
         }
 
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.Placeholder;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Post
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostViewHolder postViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final PostViewHolder postViewHolder, int i) {
         final Post post = posts.get(i);
          try{
                 String imageUrl = post.getEmbedded().getWpFeaturedmedia().get(0).getMediaDetails().getSizes().getFull().getSourceUrl();
@@ -67,11 +68,15 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Post
                  intent.putExtra("id", post.getId().toString());
                  intent.putExtra("title", post.getTitle().getRendered());
                  intent.putExtra("catId", post.getCategories().get(0).toString());
+                 intent.putExtra("breifcontent", post.getExcerpt().getRendered());
                  intent.putExtra("content", post.getContent().getRendered());
                  intent.putExtra("postLink", post.getLink());
                  intent.putExtra("imageUrl", post.getEmbedded().getWpFeaturedmedia().get(0).getMediaDetails().getSizes().getFull().getSourceUrl());
-                 context.startActivity(intent);
-                 mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                 ActivityOptionsCompat options = ActivityOptionsCompat.
+                         makeSceneTransitionAnimation(mActivity , postViewHolder.imageLarge,"image");
+                 context.startActivity(intent,options.toBundle());
+//                 mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
              }
          });
 
