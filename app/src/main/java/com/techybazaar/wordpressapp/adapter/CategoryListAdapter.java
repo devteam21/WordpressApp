@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +59,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 categoryIntent.putExtra("id", categorylist.getId().toString());
                 categoryIntent.putExtra("name", categorylist.getName());
                 ctx.startActivity(categoryIntent);
-                mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -70,12 +71,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView categoryName, totalPosts;
+        AppBarLayout appBarLayout;
 
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryName = itemView.findViewById(R.id.category_name);
             totalPosts = itemView.findViewById((R.id.total_post));
+            appBarLayout = itemView.findViewById(R.id.appbar);
 
         }
 

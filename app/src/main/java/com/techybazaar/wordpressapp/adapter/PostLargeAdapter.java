@@ -4,23 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.Placeholder;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.techybazaar.wordpressapp.PostDetails;
+import com.techybazaar.wordpressapp.PostDetailsActivity;
 import com.techybazaar.wordpressapp.R;
 import com.techybazaar.wordpressapp.model.Post;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.util.List;
 
@@ -64,8 +58,9 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Post
          postViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(context, PostDetails.class);
+                 Intent intent = new Intent(context, PostDetailsActivity.class);
                  intent.putExtra("id", post.getId().toString());
+                 intent.putExtra("date", post.getDate());
                  intent.putExtra("title", post.getTitle().getRendered());
                  intent.putExtra("catId", post.getCategories().get(0).toString());
                  intent.putExtra("breifcontent", post.getExcerpt().getRendered());

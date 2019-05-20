@@ -25,12 +25,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.techybazaar.wordpressapp.api.GetdataService;
 import com.techybazaar.wordpressapp.api.RetrofitClient;
-import com.techybazaar.wordpressapp.model.Category;
 import com.techybazaar.wordpressapp.model.CategoryName;
 import com.techybazaar.wordpressapp.utils.Tools;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -41,19 +38,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostDetails extends AppCompatActivity {
+public class PostDetailsActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private AppBarLayout appBarLayout;
-    private TextView postTitle, postCategory, viewSource;
+    private TextView postTitle, postCategory, viewSource, postDate;
     private WebView mwebView;
     private ImageView postImage;
     private Toolbar toolbar;
     private ProgressBar progressBar;
-    private  CategoryList categoryList;
 
     private List<CategoryName> catName= new ArrayList<>();
     public String name;
     public  String excerpt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +59,13 @@ public class PostDetails extends AppCompatActivity {
         setupToolbar();
 
 
+
         final Intent intent = getIntent();
         String id = intent.getStringExtra("id");
 
-        String catId = intent.getStringExtra("catId");
+        String date = intent.getStringExtra("date");
+
+        final String catId = intent.getStringExtra("catId");
 
         final String title = intent.getStringExtra("title");
         Document doc = Jsoup.parse(title);
@@ -86,12 +86,18 @@ public class PostDetails extends AppCompatActivity {
         getCategoryNameData(catId);
 
 
+
+
         postTitle = findViewById(R.id.post_title);
+        postDate = findViewById(R.id.post_date_view);
         postCategory = findViewById(R.id.post_category);
         viewSource = findViewById(R.id.view_source);
         postImage = findViewById(R.id.postImage);
 
+
         postTitle.setText(parsedTitle);
+        postDate.setText(Tools.getDurationTimeStamp(date));
+
 
 
 
@@ -102,7 +108,7 @@ public class PostDetails extends AppCompatActivity {
         viewSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sourceIntent = new Intent(PostDetails.this, CategoryPost.class);
+                Intent sourceIntent = new Intent(PostDetailsActivity.this, CategoryPost.class);
                 sourceIntent.putExtra("id", catName.get(0).getId().toString());
                 sourceIntent.putExtra("name", catName.get(0).getName());
                 startActivity(sourceIntent);
@@ -126,6 +132,8 @@ public class PostDetails extends AppCompatActivity {
                 }
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbarLayout.setTitle(title);
+                    collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.ToolbarTextStyle);
+
 
                     isShow = true;
                 } else if (isShow) {
@@ -181,7 +189,6 @@ public class PostDetails extends AppCompatActivity {
     }
     private void setupToolbar() {
         toolbar = findViewById(R.id.toolbar);
-        //toolbar.setTitle();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -227,15 +234,15 @@ public class PostDetails extends AppCompatActivity {
                 try {
                     list= response.body();
                     catName.add(list);
-                    postCategory.setText(catName.get(0).getName());
+                    name = catName.get(0).getName();
+                    postCategory.setText(name);
 
 
                 } catch (IndexOutOfBoundsException ignored) {
 
+
                 }
-
             }
-
             @Override
             public void onFailure(Call <CategoryName> call, Throwable t) {
 

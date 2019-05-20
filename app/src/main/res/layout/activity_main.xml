@@ -8,14 +8,23 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
+            android:transitionName="appbar"
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_cornered"
+            app:elevation="16dp"
+            >
 
             <include layout="@layout/toolbar" />
 
@@ -25,7 +34,7 @@
             android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/appbar">
+            android:layout_below="@+id/appbar" >
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_view_container"
@@ -47,7 +56,7 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
             <RelativeLayout
-                android:id="@+id/hori"
+                android:id="@+id/rw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -55,15 +64,18 @@
                     android:id="@+id/post_list_large"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    tools:listitem="@layout/list_item_large">
+                    tools:listitem="@layout/list_item_large"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/hori">
+                android:layout_below="@id/rw"
+                android:background="@android:color/white">
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tablayout"
@@ -76,7 +88,9 @@
                     app:tabIndicatorColor="@color/colorPrimary"
                     app:tabMode="scrollable"
                     app:tabTextAppearance="@style/MineCustomTabText"
-                    app:tabTextColor="@color/colorPrimary"></android.support.design.widget.TabLayout>
+                    app:tabTextColor="@color/colorPrimary">
+
+                </android.support.design.widget.TabLayout>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"
@@ -125,6 +139,8 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

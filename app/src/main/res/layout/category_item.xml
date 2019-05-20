@@ -2,8 +2,24 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="10dp"
     android:layout_margin="5dp">
+
+    <android.support.design.widget.AppBarLayout
+        android:transitionName="appbar"
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_cornered"
+        app:elevation="16dp"
+        android:visibility="gone">
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

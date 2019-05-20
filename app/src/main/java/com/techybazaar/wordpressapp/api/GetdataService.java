@@ -26,4 +26,7 @@ public interface GetdataService {
         @GET ("/wp-json/wp/v2/categories/{category_id}")
         Call<CategoryName> getCategoryName(@Path("category_id") String category_id);
 
+        @GET("wp-json/wp/v2/posts?_embed")
+        Call<List<Post>> getAllSearchQueryPost(@Query("search") String searchQuery);
+
 }

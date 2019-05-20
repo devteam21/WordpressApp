@@ -11,7 +11,7 @@
         </item>
         <item
             android:id="@+id/nav_categories"
-            android:icon="@drawable/ic_sample"
+            android:icon="@drawable/ic_category"
             android:title="@string/categories">
         </item>
     </group>

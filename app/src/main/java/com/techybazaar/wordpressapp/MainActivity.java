@@ -10,8 +10,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -45,6 +47,7 @@ import com.techybazaar.wordpressapp.api.RetrofitClient;
 import com.techybazaar.wordpressapp.fragment.AnmeegamFragment;
 import com.techybazaar.wordpressapp.fragment.CinemaFragment;
 import com.techybazaar.wordpressapp.fragment.CricketFragment;
+import com.techybazaar.wordpressapp.fragment.EntertainmentFragment;
 import com.techybazaar.wordpressapp.fragment.IndiaFragment;
 import com.techybazaar.wordpressapp.fragment.NewsFragment;
 import com.techybazaar.wordpressapp.fragment.TamilNaduFragment;
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout tabLayout;
     private ShimmerFrameLayout mShimmerViewContainer;
     private RelativeLayout relativeLayout, failedView;
+    private AppBarLayout appBarLayout;
 
 
     private int page_no = 1;
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         connectionCheck();
         getCategoryPost();
 
+        appBarLayout = findViewById(R.id.appbar);
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         viewPager = findViewById(R.id.viewpager);
         vAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -119,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // add fragment
         vAdapter.addFragment(new NewsFragment(), getString(R.string.news));
         vAdapter.addFragment(new CinemaFragment(), getString(R.string.cinema));
-        vAdapter.addFragment(new CinemaFragment(), getString(R.string.entertainment));
+        vAdapter.addFragment(new EntertainmentFragment(), getString(R.string.entertainment));
         vAdapter.addFragment(new TamilNaduFragment(), getString(R.string.tamilnadu));
         vAdapter.addFragment(new CricketFragment(), getString(R.string.cricket));
         vAdapter.addFragment(new IndiaFragment(), getString(R.string.india));
@@ -134,43 +139,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void getCategoryPost() {
-        GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
-        Call<List<Post>> call = service.getCategoryPost("280", page_no);
-        call.enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
-                List<Post> mlist = null;
-                try {
-                    if (response.isSuccessful()) {
-                        mlist = response.body();
-                        postLarge.addAll(mlist);
-                        pLargeAdapter.notifyDataSetChanged();
-                    } else {
-                        mShimmerViewContainer.stopShimmer();
-                        mShimmerViewContainer.setVisibility(View.VISIBLE);
-                    }
-                } catch (NullPointerException ignored) {
-
-                }
-                mShimmerViewContainer.stopShimmer();
-                mShimmerViewContainer.setVisibility(View.GONE);
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-//                Toast.makeText(MainActivity.this, "Error Occured", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-    }
 
     private void setUpToolbar() {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.home);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTextStyle);
         setSupportActionBar(toolbar);
         navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -178,6 +152,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
+
+    public void connectionCheck() {
+        relativeLayout = findViewById(R.id.content_layout);
+        failedView = findViewById(R.id.failed_view);
+        if (!NetworkCheck.isConnectingToInternet(this)) {
+            relativeLayout.setVisibility(View.GONE);
+            failedView.setVisibility(View.VISIBLE);
+        } else {
+            relativeLayout.setVisibility(View.VISIBLE);
+            failedView.setVisibility(View.GONE);
+        }
+        Button retry;
+        retry = findViewById(R.id.failed_retry);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (NetworkCheck.isConnectingToInternet(MainActivity.this)) {
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    failedView.setVisibility(View.GONE);
+                    getCategoryPost();
+                }
+            }
+        });
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -222,6 +221,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.action_search:
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(this,appBarLayout,"appbar" );
+                startActivity(searchIntent, options.toBundle());
+                break;
             case R.id.action_share:
                 Tools.shareAction(this);
                 break;
@@ -238,28 +243,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    public void connectionCheck() {
-        relativeLayout = findViewById(R.id.content_layout);
-        failedView = findViewById(R.id.failed_view);
-        if (!NetworkCheck.isConnectingToInternet(this)) {
-            relativeLayout.setVisibility(View.GONE);
-            failedView.setVisibility(View.VISIBLE);
-        } else {
-            relativeLayout.setVisibility(View.VISIBLE);
-            failedView.setVisibility(View.GONE);
-        }
-        Button retry;
-        retry = findViewById(R.id.failed_retry);
-        retry.setOnClickListener(new View.OnClickListener() {
+
+    public void getCategoryPost() {
+        GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
+        Call<List<Post>> call = service.getCategoryPost("280", page_no);
+        call.enqueue(new Callback<List<Post>>() {
             @Override
-            public void onClick(View view) {
-                if (NetworkCheck.isConnectingToInternet(MainActivity.this)) {
-                    relativeLayout.setVisibility(View.VISIBLE);
-                    failedView.setVisibility(View.GONE);
-                    getCategoryPost();
+            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
+                List<Post> mlist = null;
+                try {
+                    if (response.isSuccessful()) {
+                        mlist = response.body();
+                        postLarge.addAll(mlist);
+                        pLargeAdapter.notifyDataSetChanged();
+                    } else {
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.VISIBLE);
+                    }
+                } catch (NullPointerException ignored) {
+
                 }
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+//                Toast.makeText(MainActivity.this, "Error Occured", Toast.LENGTH_LONG).show();
+
             }
         });
+
     }
 
+
+    @Override
+    public void onBackPressed() {
+        drawerLayout.closeDrawers();
+        super.onBackPressed();
+    }
 }

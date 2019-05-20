@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.techybazaar.wordpressapp.PostDetails;
+import com.techybazaar.wordpressapp.PostDetailsActivity;
 import com.techybazaar.wordpressapp.R;
 import com.techybazaar.wordpressapp.model.Post;
 import com.techybazaar.wordpressapp.utils.Tools;
@@ -24,6 +23,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,10 +54,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Document document = Jsoup.parse(post.getTitle().getRendered());
         final String title = document.body().text();
         postViewHolder.postTitleView.setText(title);
-        String  date = Tools.date;
-        postViewHolder.postDateView.setText(date);
-        Document doc = Jsoup.parse(post.getExcerpt().getRendered());
-        String content = doc.body().text();
+        postViewHolder.postDateView.setText(Tools.getDurationTimeStamp(post.getDate()));
+//        Document doc = Jsoup.parse(post.getExcerpt().getRendered());
+//        String content = doc.body().text();
 //        postViewHolder.postContentView.setText(content);
 
         try {
@@ -81,8 +80,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, PostDetails.class);
+                Intent intent = new Intent(context, PostDetailsActivity.class);
                 intent.putExtra("id", post.getId().toString());
+                intent.putExtra("date", post.getDate());
                 intent.putExtra("title", post.getTitle().getRendered());
                 intent.putExtra("catId", post.getCategories().get(0).toString());
                 intent.putExtra("breifcontent", post.getExcerpt().getRendered());
@@ -138,6 +138,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 notifyItemRemoved(i);
             }
         }
+    }
+    public void resetListData() {
+        this.posts = new ArrayList<>();
+        notifyDataSetChanged();
+    }
+    public void insertData(List<Post> posts) {
+        setLoaded();
+        int positionStart = getItemCount();
+        int itemCount = posts.size();
+        this.posts.addAll(posts);
+        notifyItemChanged(positionStart, itemCount);
     }
 
 }

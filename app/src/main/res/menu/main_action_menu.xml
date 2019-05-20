@@ -2,10 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:title="@string/search"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always">
+    </item>
+    <item
         android:title="@string/share"
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share"
-        app:showAsAction="always">
+        app:showAsAction="collapseActionView">
     </item>
     <item
         android:title="@string/goto_website"

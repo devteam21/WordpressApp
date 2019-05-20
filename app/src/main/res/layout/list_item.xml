@@ -71,12 +71,13 @@
                     android:layout_marginBottom="5dp"
                     android:orientation="horizontal">
 
+
                     <TextView
                         android:id="@+id/post_date_view"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=""
+                        android:text="19 May 2019"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                 </LinearLayout>
 

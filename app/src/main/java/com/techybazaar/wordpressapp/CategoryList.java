@@ -78,6 +78,7 @@ public class CategoryList extends AppCompatActivity {
     private void setupToolbar() {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.categories));
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTextStyle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

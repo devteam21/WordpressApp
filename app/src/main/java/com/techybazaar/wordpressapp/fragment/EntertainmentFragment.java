@@ -51,7 +51,7 @@ public class EntertainmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_news, container, false);
+        view = inflater.inflate(R.layout.fragment_entertainment, container, false);
 
         getCategoryPost();
         mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);

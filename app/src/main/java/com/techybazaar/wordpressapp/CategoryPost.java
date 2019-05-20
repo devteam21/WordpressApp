@@ -103,6 +103,7 @@ public class CategoryPost extends AppCompatActivity {
     private void setupToolbar(String categoryName) {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(categoryName);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTextStyle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

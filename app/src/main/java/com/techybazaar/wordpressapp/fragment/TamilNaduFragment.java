@@ -52,7 +52,7 @@ public class TamilNaduFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_news, container, false);
+        view = inflater.inflate(R.layout.fragment_tamil_nadu, container, false);
 
         getCategoryPost();
 
