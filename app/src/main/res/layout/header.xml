@@ -2,6 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/cinehitz_cover"
+    android:background="@drawable/header_banner"
     android:orientation="vertical">
 </RelativeLayout>

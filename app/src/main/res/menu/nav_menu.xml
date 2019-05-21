@@ -18,6 +18,11 @@
     <group android:id="@+id/group2"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings">
+        </item>
+        <item
             android:id="@+id/nav_privacy"
             android:icon="@drawable/ic_privacy"
             android:title="@string/privacy">

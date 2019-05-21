@@ -116,7 +116,14 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@color/grey" />
-
+            <ProgressBar
+                android:id="@+id/psbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/divider"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:visibility="invisible" />
             <WebView
                 android:id="@+id/post_webview"
                 android:layout_width="match_parent"
@@ -126,20 +133,35 @@
                 android:scrollbars="none">
 
             </WebView>
+            <LinearLayout
+                android:layout_below="@+id/post_webview"
+                android:background="@android:color/white"
+                android:id="@+id/banner_ad_webview"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="120dp">
 
-            <ProgressBar
-                android:id="@+id/psbar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_below="@+id/divider"
-                android:layout_centerInParent="true"
-                android:background="@android:color/transparent"
-                android:visibility="invisible" />
+            </LinearLayout>
+
+
+
 
         </RelativeLayout>
 
-
     </android.support.v4.widget.NestedScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@android:color/white"
+        android:id="@+id/banner_ad"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
+    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Wordpress App</string>
+    <string name="app_version">Version 1.1</string>
+    <string name="developer_email">mjjabarullah@email.com</string>
+    <string name="copyright">Copyright © 2019 cinehitz.com.\nAll Rights Reserved.</string>
+
+    <!--Navigation Titles-->
     <string name="home">Home</string>
     <string name="categories"> All Category</string>
     <string name="privacy">Privacy Policy</string>
@@ -13,7 +18,7 @@
     <string name="goto_website">Goto Website</string>
     <string name="search">Search</string>
 
-
+    <!--Fragment Title Names-->
     <string name="news">செய்திகள்</string>
     <string name="cinema">சினிமா</string>
     <string name="tamilnadu">தமிழ்நாடு</string>
@@ -23,5 +28,20 @@
     <string name="anmeegam">ஆன்மீகம்</string>
     <string name="entertainment">பொழுதுபோக்கு</string>
 
+    <!-- Activity Setting : xml/setting_preference.xml -->
+    <string name="pref_group_notif">NOTIFICATIONS</string>
+    <string name="pref_group_others">OTHERS</string>
+    <string name="pref_title_notif">Push Notifications</string>
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_title_copyright">Copyright</string>
+    <string name="pref_title_dev_email">Developer Email</string>
+    <string name="pref_title_build">Build Version</string>
+    <string name="settings">Setting</string>
+
+    <!--Admob test ads id-->
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
 
 </resources>

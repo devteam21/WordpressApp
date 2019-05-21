@@ -38,4 +38,13 @@
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"/>
+    <LinearLayout
+        android:background="@android:color/white"
+        android:id="@+id/banner_ad"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+    </LinearLayout>
 </RelativeLayout>

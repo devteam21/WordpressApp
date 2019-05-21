@@ -9,142 +9,152 @@
     android:background="@android:color/white">
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:transitionName="appbar"
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/background_cornered"
-            app:elevation="16dp"
-            >
-
-            <include layout="@layout/toolbar" />
-
-        </android.support.design.widget.AppBarLayout>
-
         <RelativeLayout
-            android:id="@+id/content_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/appbar" >
+            android:layout_height="match_parent">
 
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmer_view_container"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                shimmer:shimmer_duration="800">
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/background_cornered"
+                android:transitionName="appbar"
+                app:elevation="16dp">
 
-                <LinearLayout
+                <include layout="@layout/toolbar" />
+
+            </android.support.design.widget.AppBarLayout>
+
+            <RelativeLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/appbar">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_view_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    shimmer:shimmer_duration="800">
 
-                    <include layout="@layout/post_list_large_placeholder_layout" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/post_list_large_placeholder_layout" />
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
-            </com.facebook.shimmer.ShimmerFrameLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <RelativeLayout
-                android:id="@+id/rw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/post_list_large"
+                <RelativeLayout
+                    android:id="@+id/rw"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    tools:listitem="@layout/list_item_large"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    android:layout_height="wrap_content">
 
-                </android.support.v7.widget.RecyclerView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/post_list_large"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        tools:listitem="@layout/list_item_large">
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rw"
+                    android:background="@android:color/white">
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tablayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@android:color/transparent"
+                        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                        app:tabGravity="fill"
+                        app:tabIndicatorColor="@color/colorPrimary"
+                        app:tabMode="scrollable"
+                        app:tabTextAppearance="@style/MineCustomTabText"
+                        app:tabTextColor="@color/colorPrimary">
+
+                    </android.support.design.widget.TabLayout>
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tablayout" />
+
+
+                </RelativeLayout>
+
+
             </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rw"
-                android:background="@android:color/white">
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tablayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:tabGravity="fill"
-                    app:tabIndicatorColor="@color/colorPrimary"
-                    app:tabMode="scrollable"
-                    app:tabTextAppearance="@style/MineCustomTabText"
-                    app:tabTextColor="@color/colorPrimary">
-
-                </android.support.design.widget.TabLayout>
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/tablayout" />
-
-
-            </RelativeLayout>
-
 
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/failed_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/failed_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/failed_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_middle"
+                    android:text="No Internet Connection"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/grey" />
+
+                <Button
+                    android:id="@+id/failed_retry"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="retry" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
+            android:background="@android:color/white"
+            android:id="@+id/banner_ad"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/failed_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:text="No Internet Connection"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/grey" />
-
-            <Button
-                android:id="@+id/failed_retry"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="retry" />
         </LinearLayout>
-
     </RelativeLayout>
-
-
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"

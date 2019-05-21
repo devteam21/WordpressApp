@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.techybazaar.wordpressapp">
+    package="com.cinehitz.cinehitzapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -12,12 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchActivity"></activity>
-        <activity android:name=".CategoryPost" />
-        <activity android:name=".PostDetailsActivity" />
-        <activity android:name=".CategoryList" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.cinehitz.cinehitzapp.SplashActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,11 +22,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.cinehitz.cinehitzapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity android:name="com.cinehitz.cinehitzapp.SettingActivity">
+
+        </activity>
+        <activity android:name="com.cinehitz.cinehitzapp.SearchActivity">
+
+        </activity>
+        <activity android:name="com.cinehitz.cinehitzapp.CategoryPost" >
+
+        </activity>
+        <activity android:name="com.cinehitz.cinehitzapp.PostDetailsActivity" >
+
+        </activity>
+        <activity android:name="com.cinehitz.cinehitzapp.CategoryList" >
+
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value= "@string/admob_app_id"/>
     </application>
 
 </manifest>

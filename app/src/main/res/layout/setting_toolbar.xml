@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="5dp"
+    android:minHeight="?attr/actionBarSize"
+    app:navigationContentDescription="@string/abc_action_bar_up_description"
+    android:background="@drawable/background_cornered"
+    app:navigationIcon="?attr/homeAsUpIndicator"
+    app:title="@string/settings"
+    app:titleTextAppearance="@style/ToolbarTextStyle"
+    />
