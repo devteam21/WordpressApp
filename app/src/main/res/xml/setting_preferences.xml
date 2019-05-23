@@ -30,6 +30,9 @@
             android:summary="@string/copyright"
             android:title="@string/pref_title_copyright" />
         <Preference
+            android:summary="@string/email_id"
+            android:title="@string/dev_email" />
+        <Preference
             android:summary="@string/app_version"
             android:title="@string/pref_title_build" />
 

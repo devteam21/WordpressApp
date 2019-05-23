@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news, container, false);
 
-        getCategoryPost();
+        getCategoryPost(page_no);
 
         mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
         recyclerView = view.findViewById(R.id.post_list);
@@ -69,7 +70,7 @@ public class NewsFragment extends Fragment {
                 int lastPos = manager.findLastVisibleItemPosition();
                 if (lastPos == (pAdapter.getItemCount() - 1)) {
                     page_no++;
-                    getCategoryPost();
+                    getCategoryPost(page_no);
 
                 } else {
                     pAdapter.setLoaded();
@@ -78,14 +79,14 @@ public class NewsFragment extends Fragment {
 
             }
         });
-
-
         return view ;
     }
 
-    public void getCategoryPost() {
+
+
+    public void getCategoryPost(int page_no) {
     GetdataService service = RetrofitClient.getRetrofitInstance().create(GetdataService.class);
-    Call<List<Post>> call = service.getCategoryPost("392", page_no);
+    Call<List<Post>> call = service.getAllPosts(page_no);
     call.enqueue(new Callback<List<Post>>() {
         @Override
         public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {

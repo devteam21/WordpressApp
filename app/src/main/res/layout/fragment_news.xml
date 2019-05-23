@@ -6,43 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".fragment.NewsFragment">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        shimmer:shimmer_duration="800">
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                shimmer:shimmer_duration="800">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <include layout="@layout/post_list_placeholder_layout" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <include layout="@layout/post_list_placeholder_layout" />
+                    <include layout="@layout/post_list_placeholder_layout" />
 
-            <include layout="@layout/post_list_placeholder_layout" />
+                    <include layout="@layout/post_list_placeholder_layout" />
 
-            <include layout="@layout/post_list_placeholder_layout" />
+                    <include layout="@layout/post_list_placeholder_layout" />
 
-            <include layout="@layout/post_list_placeholder_layout" />
+                    <include layout="@layout/post_list_placeholder_layout" />
 
-            <include layout="@layout/post_list_placeholder_layout" />
+                    <include layout="@layout/post_list_placeholder_layout" />
 
-            <include layout="@layout/post_list_placeholder_layout" />
-        </LinearLayout>
+                    <include layout="@layout/post_list_placeholder_layout" />
 
-    </com.facebook.shimmer.ShimmerFrameLayout>
+                    <include layout="@layout/post_list_placeholder_layout" />
+                </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
-        android:id="@+id/post_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/list_item">
+            <android.support.v7.widget.RecyclerView
 
-    </android.support.v7.widget.RecyclerView>
+                android:id="@+id/post_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/list_item">
+
+            </android.support.v7.widget.RecyclerView>
+
+
 
 
 </RelativeLayout>

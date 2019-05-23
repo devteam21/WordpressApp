@@ -64,6 +64,7 @@
 
     </android.support.v7.widget.RecyclerView>
     <LinearLayout
+        android:visibility="gone"
         android:background="@android:color/white"
         android:id="@+id/banner_ad"
         android:layout_width="match_parent"

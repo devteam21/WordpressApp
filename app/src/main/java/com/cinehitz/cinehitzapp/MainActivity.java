@@ -55,13 +55,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.cinehitz.cinehitzapp.utils.Tools.exitAction;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public Toolbar toolbar;
     public DrawerLayout drawerLayout;
     public NavigationView navigationView;
     public ActionBarDrawerToggle toggle;
-    private RecyclerView recyclerView, recyclerViewLarge;
+    private RecyclerView  recyclerViewLarge;
     private LinearLayoutManager manager;
     private PostLargeAdapter pLargeAdapter;
     private List<Post> postLarge = new ArrayList<>();
@@ -100,10 +102,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAdview = new AdView(this);
         mAdview.setAdUnitId(getString(R.string.admob_banner_id));
         mAdview.setAdSize(AdSize.LARGE_BANNER);
-        LinearLayout layout = findViewById(R.id.banner_ad);
+        final LinearLayout layout = findViewById(R.id.banner_ad);
         layout.addView(mAdview);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdview.loadAd(adRequest);
+        mAdview.setAdListener( new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                layout.setVisibility(View.VISIBLE);
+            }
+        });
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
         mInterstitialAd.loadAd(adRequest);
@@ -137,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         // add fragment
-        vAdapter.addFragment(new CinemaFragment(), getString(R.string.cinema));
         vAdapter.addFragment(new NewsFragment(), getString(R.string.news));
+        vAdapter.addFragment(new CinemaFragment(), getString(R.string.cinema));
         vAdapter.addFragment(new EntertainmentFragment(), getString(R.string.entertainment));
         vAdapter.addFragment(new TamilNaduFragment(), getString(R.string.tamilnadu));
         vAdapter.addFragment(new CricketFragment(), getString(R.string.cricket));
@@ -255,24 +264,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.action_search:
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                    mInterstitialAd.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
-                            Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
-                            ActivityOptionsCompat options = ActivityOptionsCompat
-                                    .makeSceneTransitionAnimation(MainActivity.this, appBarLayout, "appbar");
-                            startActivity(searchIntent, options.toBundle());
-                        }
-                    });
-                } else {
-                    Intent searchIntent = new Intent(this, SearchActivity.class);
-                    ActivityOptionsCompat options = ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(this, appBarLayout, "appbar");
-                    startActivity(searchIntent, options.toBundle());
-                }
+
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(this, appBarLayout, "appbar");
+                startActivity(searchIntent, options.toBundle());
+
                 break;
             case R.id.action_share:
                 Tools.shareAction(this);
@@ -325,9 +322,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+
     @Override
     public void onBackPressed() {
         drawerLayout.closeDrawers();
-        super.onBackPressed();
+        exitAction(MainActivity.this);
     }
 }

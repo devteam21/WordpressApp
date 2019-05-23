@@ -15,6 +15,7 @@ import com.cinehitz.cinehitzapp.adapter.CategoryListAdapter;
 import com.cinehitz.cinehitzapp.api.GetdataService;
 import com.cinehitz.cinehitzapp.api.RetrofitClient;
 import com.cinehitz.cinehitzapp.model.Category;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -58,10 +59,17 @@ public class CategoryList extends AppCompatActivity {
         mAdview = new AdView(this);
         mAdview.setAdUnitId(getString(R.string.admob_banner_id));
         mAdview.setAdSize(AdSize.LARGE_BANNER);
-        LinearLayout layout = findViewById(R.id.banner_ad);
+        final LinearLayout layout = findViewById(R.id.banner_ad);
         layout.addView(mAdview);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdview.loadAd(adRequest);
+        mAdview.setAdListener( new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                layout.setVisibility(View.VISIBLE);
+            }
+        });
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
         mInterstitialAd.loadAd(adRequest);

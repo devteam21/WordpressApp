@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,11 @@ import com.cinehitz.cinehitzapp.adapter.PostAdapter;
 import com.cinehitz.cinehitzapp.api.GetdataService;
 import com.cinehitz.cinehitzapp.api.RetrofitClient;
 import com.cinehitz.cinehitzapp.model.Post;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +48,9 @@ public class SearchActivity extends AppCompatActivity {
     private ImageButton btn_clear, btn_search;
     private ShimmerFrameLayout mShimmerViewContainer;
     private LinearLayoutManager manager;
-    private View parent_view;
     private List<Post> postSearch = new ArrayList<>();
+    private AdView mAdview;
+    private InterstitialAd mInterstitialAd;
 
     private int page_no = 1;
     private boolean loading ;
@@ -63,6 +70,20 @@ public class SearchActivity extends AppCompatActivity {
         edit_search.addTextChangedListener(textWatcher);
         query = edit_search.getText().toString().trim();
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+
+
+        //admob ads
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
+        mAdview = new AdView(this);
+        mAdview.setAdUnitId(getString(R.string.admob_banner_id));
+        mAdview.setAdSize(AdSize.LARGE_BANNER);
+        final LinearLayout layout = findViewById(R.id.banner_ad);
+        layout.addView(mAdview);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdview.loadAd(adRequest);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
+        mInterstitialAd.loadAd(adRequest);
 
         // Large banner recyclerview
         recyclerView = findViewById(R.id.recyclerViewSearch);
@@ -94,6 +115,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View view) {
                 edit_search.setText("");
                 pAdapter.resetListData();
+                layout.setVisibility(View.GONE);
             }
         });
 
@@ -103,6 +125,7 @@ public class SearchActivity extends AppCompatActivity {
                     pAdapter.resetListData();
                     hideKeyboard();
                     searchQuery();
+                    layout.setVisibility(View.VISIBLE);
                     return true;
                 }
                 return false;
@@ -237,6 +260,7 @@ public class SearchActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     getSearchPost(query, page_no);
+                    mInterstitialAd.show();
                 }
             }, 2000);
         } else {

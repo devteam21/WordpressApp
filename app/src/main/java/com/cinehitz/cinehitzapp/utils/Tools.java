@@ -2,7 +2,7 @@ package com.cinehitz.cinehitzapp.utils;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -11,7 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 
+import com.cinehitz.cinehitzapp.MainActivity;
 import com.cinehitz.cinehitzapp.R;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,9 +21,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Tools extends AppCompatActivity {
-
-
-
 
 
     public static void aboutAction(Activity activity) {
@@ -34,7 +33,7 @@ public class Tools extends AppCompatActivity {
 
     public static void privacyAction(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Privacy Policy");
+        builder.setTitle(activity.getString(R.string.privacy));
         builder.setMessage(Html.fromHtml(activity.getString(R.string.privacy_text)));
         builder.setPositiveButton("Accept", null);
         builder.show();
@@ -47,7 +46,8 @@ public class Tools extends AppCompatActivity {
         try {
             activity.startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + activity.getPackageName())));
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="
+                    + activity.getPackageName())));
         }
     }
 
@@ -57,7 +57,8 @@ public class Tools extends AppCompatActivity {
         try {
             activity.startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=Tamil+Entertainment+World&hl=en")));
+            activity.startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/developer?id=Tamil+Entertainment+World&hl=en")));
         }
 
     }
@@ -65,7 +66,9 @@ public class Tools extends AppCompatActivity {
     public static void shareAction(Activity activity) {
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
-        String shareBody = "CineHitz is  latest cinema news and movie review app.\nDownload App now\n" + "https://play.google.com/store/apps/details?id=" + activity.getApplicationContext().getPackageName();
+        String shareBody = "CineHitz is  latest cinema news and movie review app.\nDownload App now\n"
+                + "https://play.google.com/store/apps/details?id="
+                + activity.getApplicationContext().getPackageName();
         share.putExtra(Intent.EXTRA_TEXT, shareBody);
         activity.startActivity(Intent.createChooser(share, "share using"));
     }
@@ -73,27 +76,39 @@ public class Tools extends AppCompatActivity {
     @NonNull
     public static void sharePost(Activity activity, String title, String postUrl, String content) {
 
-//        Uri imageUri = Uri.parse(imageUrl);
-//        Intent shareIntent = new Intent();
-//        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, "Hello");
-//        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-//        shareIntent.setType("image/*");
-//        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        activity.startActivity(Intent.createChooser(shareIntent, "send"));
-
         // string to share
         StringBuilder sb = new StringBuilder();
         sb.append(title + "\n");
         sb.append("Source Link : " + postUrl + "\n");
         sb.append(content + "\n");
-        sb.append("Download app from playstore: " + "https://play.google.com/store/apps/details?id=" + activity.getApplicationContext().getPackageName());
-
+        sb.append("Download app from playstore: "
+                + "https://play.google.com/store/apps/details?id="
+                + activity.getApplicationContext().getPackageName());
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name));
         sharingIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
         activity.startActivity(Intent.createChooser(sharingIntent, "Share Using"));
+    }
+    public static void exitAction(final Activity activity){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Exit");
+        builder.setMessage("Before closing rate our app. Are you sure you want to exit?");
+        builder.setCancelable(true);
+        builder.setNegativeButton("Rate App", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                rateAction(activity);
+            }
+        });
+        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                activity.finish();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public static String getDurationTimeStamp(String date) {
@@ -125,26 +140,29 @@ public class Tools extends AppCompatActivity {
             timeDifference = month + " months ago";
             return timeDifference;
         }else if (diffInHours > 1 && diffInHours<=23) {
-            timeDifference = diffInHours + " hours ago";
+            timeDifference = diffInHours + " hrs ago";
             return timeDifference;
         } else if(diffInHours>=24){
             int day = (int) (diffInHours/24);
             timeDifference = day+" days ago";
             return timeDifference;
         }else if (diffInMinutes > 1 && diffInMinutes<59) {
-            timeDifference = diffInMinutes + " minutes ago";
+            timeDifference = diffInMinutes + " mins ago";
             return timeDifference;
         }else if (diffInMinutes >=60) {
             int hour = (int) (diffInMinutes/60);
             timeDifference = hour + " hour ago";
             return timeDifference;
-        }else if (diffInSeconds > 1) {
+        }else if (diffInSeconds > 1 && diffInSeconds<59) {
             timeDifference = diffInSeconds + " seconds ago";
+            return timeDifference;
+        } else if ( diffInSeconds>=60) {
+            int min = (int) (diffInSeconds/60);
+            timeDifference = min + " min ago";
             return timeDifference;
         }
 
         return timeDifference;
-
     }
 
 }
